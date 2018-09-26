@@ -1,21 +1,29 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import { connect } from 'react-redux';
+
+import Main from './components/Main';
+
 import './App.css';
 
 class App extends Component {
   render() {
+    if (this.props.isAuthorized) {
+      return (
+        <Main router={this.props.router}/>
+      );
+    }
+
+    this.props.router.push('/login');
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-      </div>
+      <div />
     );
   }
 }
 
-export default App;
+const mapStateToProps = (state) => ({
+  isAuthorized: state.token !== null,
+});
+
+export default connect(
+  mapStateToProps
+)(App);
